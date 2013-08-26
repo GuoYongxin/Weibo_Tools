@@ -120,11 +120,9 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 					Log.v(TAG, "Code:" + code);
 					String accessTokenUrl = getAccessTokenUrl(code);
 					Log.v(TAG, "accessTokenUrl ur:l" + accessTokenUrl);
+					mWebView.setVisibility(View.INVISIBLE);
+					mProgressBar.setVisibility(View.VISIBLE);
 					new TokenThread(accessTokenUrl).start();
-//					Map<String, String> map = new HashMap<String, String>();
-//					map.put("client_id", ConstantS.APP_KEY);
-//					map.put("client_secret", ConstantS.APP_Secret);
-//					view.loadUrl(accessTokenUrl, map);
 				} else {
 
 				}
