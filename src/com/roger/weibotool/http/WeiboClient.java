@@ -7,7 +7,7 @@ import com.loopj.android.http.RequestParams;
 
 public class WeiboClient
 {
-    private static final String BASE_URL = "https://api.weibo.com/2/";
+    private static final String BASE_URL = "https://api.weibo.com/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

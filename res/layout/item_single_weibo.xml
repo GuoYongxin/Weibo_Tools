@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp" >
+
+    <ImageView
+        android:id="@+id/weibo_avatar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="7dp"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/weibo_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/weibo_avatar"
+        android:padding="7dp"
+        android:singleLine="true"
+        android:text="username"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/weibo_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/weibo_username"
+        android:layout_below="@id/weibo_username"
+        android:layout_toRightOf="@id/weibo_avatar"
+        android:padding="7dp"
+        android:text="contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent" />
+
+    <ImageView
+        android:id="@+id/weibo_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@id/weibo_username"
+        android:layout_below="@id/weibo_content"
+        android:padding="7dp"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/weibo_retweet_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/weibo_username"
+        android:padding="7dp"
+        android:text="转发：23" />
+
+</RelativeLayout>

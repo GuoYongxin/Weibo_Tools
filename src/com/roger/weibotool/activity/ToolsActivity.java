@@ -10,6 +10,6 @@ public class ToolsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_authenticate);
+		setContentView(R.layout.activity_tools);
 	}
 }
