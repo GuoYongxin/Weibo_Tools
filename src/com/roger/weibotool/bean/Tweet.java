@@ -1,41 +1,62 @@
 package com.roger.weibotool.bean;
 
-public class Tweet {
+public class Tweet
+{
 
-	private String text;
-	private String id;
-	private String tumbnail;
-	private String repostCount;
+    private String text;
+    private String id;
+    private String tumbnail;
+    private String repostCount;
 
-	public String getText() {
-		return text;
-	}
+    private User user;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public String getText()
+    {
+        return text;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setText(String text)
+    {
+        this.text = text;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId()
+    {
+        return id;
+    }
 
-	public String getTumbnail() {
-		return tumbnail;
-	}
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
-	public void setTumbnail(String tumbnail) {
-		this.tumbnail = tumbnail;
-	}
+    public String getTumbnail()
+    {
+        return tumbnail;
+    }
 
-	public String getRepostCount() {
-		return repostCount;
-	}
+    public void setTumbnail(String tumbnail)
+    {
+        this.tumbnail = tumbnail;
+    }
 
-	public void setRepostCount(String repostCount) {
-		this.repostCount = repostCount;
-	}
+    public String getRepostCount()
+    {
+        return repostCount;
+    }
+
+    public void setRepostCount(String repostCount)
+    {
+        this.repostCount = repostCount;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
 }
