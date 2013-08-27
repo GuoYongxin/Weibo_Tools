@@ -14,6 +14,7 @@ public class AccessTokenKeeper {
 		Editor editor = pref.edit();
 		editor.putString("token", token.getToken());
 		editor.putLong("expiresTime", token.getExpireTime());
+		editor.putString("uid", token.getUid());
 		editor.commit();
 	}
 
@@ -29,6 +30,7 @@ public class AccessTokenKeeper {
 		SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		token.setToken(pref.getString("token", ""));
 		token.setExpireTime(pref.getLong("expiresTime", 0));
+		token.setUid(pref.getString("uid", ""));
 		return token;
 	}
 }

@@ -71,7 +71,8 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 
 	private void viewToken() {
 		Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(getApplicationContext());
-		Toast.makeText(getApplicationContext(), "AccessToken:" + token.getToken() + "\n" + "Expire in:" + token.getExpireTime(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "AccessToken:" + token.getToken() + "\n" + "Expire in:" + token.getExpireTime() + "Uid:" + token.getUid(),
+				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -175,6 +176,7 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 					Oauth2AccessToken token = new Oauth2AccessToken();
 					token.setToken(accessToken);
 					token.setExpireTime(Long.valueOf(expires_in));
+					token.setUid(uid);
 					AccessTokenKeeper.keepAccessToken(getApplicationContext(), token);
 					mHandle.post(new Runnable() {
 						@Override

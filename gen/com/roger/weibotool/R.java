@@ -32,8 +32,8 @@ public final class R {
         public static final int auth_webview=0x7f080003;
         public static final int main_authenticate_btn=0x7f080005;
         public static final int main_tools_btn=0x7f080006;
-        public static final int tool=0x7f080009;
         public static final int tool_listview=0x7f080008;
+        public static final int tool_more_btn=0x7f080009;
         public static final int tool_progressbar=0x7f08000a;
         public static final int tool_username=0x7f080007;
         public static final int weibo_avatar=0x7f08000b;
