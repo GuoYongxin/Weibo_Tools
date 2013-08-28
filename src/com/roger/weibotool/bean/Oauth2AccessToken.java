@@ -1,6 +1,12 @@
 package com.roger.weibotool.bean;
 
-public class Oauth2AccessToken {
+import java.io.Serializable;
+
+public class Oauth2AccessToken implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 734972545851327048L;
 	private String token;
 	private long expireTime;
 	private String uid;
@@ -27,5 +33,11 @@ public class Oauth2AccessToken {
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "AccessToken:" + getToken() + "\n" + "Expire in:" + getExpireTime() + "\n" + "Uid:" + getUid();
 	}
 }

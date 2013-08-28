@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Username"
+            android:text="Click item to view the repost detail"
             android:textSize="15sp" />
 
         <ListView

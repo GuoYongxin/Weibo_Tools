@@ -71,8 +71,7 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 
 	private void viewToken() {
 		Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(getApplicationContext());
-		Toast.makeText(getApplicationContext(), "AccessToken:" + token.getToken() + "\n" + "Expire in:" + token.getExpireTime() + "Uid:" + token.getUid(),
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), token.toString(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -125,7 +124,6 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 					Log.v(TAG, "accessTokenUrl ur:l" + accessTokenUrl);
 					mWebView.setVisibility(View.INVISIBLE);
 					mProgressBar.setVisibility(View.VISIBLE);
-//					new TokenThread(accessTokenUrl).start();
 					getAccessToken(accessTokenUrl);
 				} else {
 
@@ -166,7 +164,6 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onSuccess(final JSONObject response) {
-//				super.onSuccess(response);
 				Log.v(TAG, "Success");
 				try {
 					String accessToken = response.getString("access_token");
@@ -183,7 +180,6 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 						public void run() {
 							Log.v(TAG, response.toString());
 							Toast.makeText(getApplicationContext(), "Success Login", Toast.LENGTH_SHORT).show();
-//							AuthenticateActivity.this.finish();
 						}
 					});
 				} catch (JSONException e) {
@@ -194,14 +190,12 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
-//				super.onFailure(e, errorResponse);
 				Log.v(TAG, "Failure");
 				mHandle.post(new Runnable() {
 					@Override
 					public void run() {
 
 						Toast.makeText(getApplicationContext(), "Failed get token", Toast.LENGTH_SHORT).show();
-//						AuthenticateActivity.this.finish();
 					}
 				});
 			}
@@ -210,53 +204,4 @@ public class AuthenticateActivity extends Activity implements OnClickListener {
 		Log.v(TAG, "post  " + url);
 		WeiboClient.post(url, params, responseHandler);
 	}
-//	private void getToken(String url) {
-//		HttpClient http = new DefaultHttpClient();
-//		HttpPost post = new HttpPost(url);
-//		List<NameValuePair> params = new ArrayList<NameValuePair>();
-//		params.add(new BasicNameValuePair("client_id", ConstantS.APP_KEY));
-//		params.add(new BasicNameValuePair("client_secret", ConstantS.APP_Secret));
-//		HttpResponse httpResponse;
-//		try {
-//			post.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			httpResponse = http.execute(post);
-//			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-//				String strResult = EntityUtils.toString(httpResponse.getEntity());
-//				Log.v(TAG, strResult);
-//				mHandle.post(new Runnable() {
-//					@Override
-//					public void run() {
-//						Toast.makeText(getApplicationContext(), "Success Login", Toast.LENGTH_SHORT).show();
-//						AuthenticateActivity.this.finish();
-//					}
-//				});
-//			} else {
-//				Log.v(TAG, "Failed get token");
-//			}
-//		} catch (ClientProtocolException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	private class TokenThread extends Thread {
-//		String url;
-//
-//		public TokenThread(String url) {
-//			this.url = url;
-//
-//		}
-//
-//		@Override
-//		public void run() {
-//			getToken(url);
-//			super.run();
-//		}
-//
-//	}
 }
