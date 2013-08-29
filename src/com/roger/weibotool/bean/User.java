@@ -1,6 +1,7 @@
 package com.roger.weibotool.bean;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class User implements Serializable {
 	/**
@@ -34,7 +35,11 @@ public class User implements Serializable {
 	}
 
 	public void setGender(String gender) {
-		this.gender = gender;
+		if (gender.equals("m")) {
+			this.gender = "Male";
+		} else {
+			this.gender = "Female";
+		}
 	}
 
 	public String getProfile_image_url() {
@@ -55,6 +60,9 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + "\t" + screen_name + "\t" + gender + "\t" + location;
+		// return String.format(Locale.ENGLISH,"%-20s %-20s %-20s %-20s",
+		// id,screen_name,gender,location);
+		return id + "," + screen_name + "," + gender + "," + location;
+		// return id + "\t" + screen_name + "\t" + gender + "\t" + location;
 	}
 }

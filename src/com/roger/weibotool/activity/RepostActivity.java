@@ -1,11 +1,16 @@
 package com.roger.weibotool.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +46,9 @@ public class RepostActivity extends Activity implements OnClickListener {
 	private ListView mListView;
 	private ProgressBar mProgressBar;
 	private Button mMore;
-	private RepostAdapter adapter = new RepostAdapter(null);
+	private Button mAll;
+	private Button mSend;
+	private RepostAdapter mAdapter = new RepostAdapter(null);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,8 @@ public class RepostActivity extends Activity implements OnClickListener {
 		mListView = (ListView) findViewById(R.id.repost_listview);
 		mProgressBar = (ProgressBar) findViewById(R.id.repost_progressbar);
 		mMore = (Button) findViewById(R.id.repost_more_btn);
+		mAll = (Button) findViewById(R.id.repost_all_btn);
+		mSend = (Button) findViewById(R.id.repost_send_btn);
 		readExtras();
 		initComponents();
 		getData();
@@ -61,7 +70,12 @@ public class RepostActivity extends Activity implements OnClickListener {
 			case R.id.repost_more_btn :
 				getData();
 				break;
-
+			case R.id.repost_all_btn :
+				getData(200);
+				break;
+			case R.id.repost_send_btn :
+				sendData();
+				break;
 			default :
 				break;
 		}
@@ -69,7 +83,9 @@ public class RepostActivity extends Activity implements OnClickListener {
 
 	private void initComponents() {
 		mMore.setOnClickListener(this);
-		mListView.setAdapter(adapter);
+		mAll.setOnClickListener(this);
+		mSend.setOnClickListener(this);
+		mListView.setAdapter(mAdapter);
 	}
 
 	private void readExtras() {
@@ -79,8 +95,10 @@ public class RepostActivity extends Activity implements OnClickListener {
 			Log.v(TAG, "Read Extras:" + tweet_id);
 		}
 	}
-
 	private void getData() {
+		getData(20);
+	}
+	private void getData(int count) {
 		String url = "2/statuses/repost_timeline.json";
 		RequestParams params = new RequestParams();
 		Oauth2AccessToken token = AccessTokenKeeper
@@ -89,7 +107,7 @@ public class RepostActivity extends Activity implements OnClickListener {
 		// params.put("id", String.valueOf(tweet_id));
 		// FIXME hard code ID
 		params.put("id", "3614237831872267");
-		params.put("count", "20");
+		params.put("count", String.valueOf(count));
 		if (next_max_id != 0l)
 			params.put("max_id", String.valueOf(next_max_id - 1l));
 		WeiboClient.get(url, params, responseHandler);
@@ -113,10 +131,17 @@ public class RepostActivity extends Activity implements OnClickListener {
 			Log.v(TAG, "onSuccess");
 			ArrayList<Tweet> tweets = WeiboParser.parseTweetArray(response,
 					"reposts");
-			adapter.addAll(tweets);
-			next_max_id = Long.valueOf(tweets.get(tweets.size() - 1).getId());
-			adapter.notifyDataSetChanged();
-			Log.v(TAG, "next_max_id:" + next_max_id);
+			if (tweets != null && tweets.size() > 0) {
+				mAdapter.addAll(tweets);
+				next_max_id = Long.valueOf(tweets.get(tweets.size() - 1)
+						.getId());
+				mAdapter.notifyDataSetChanged();
+				Log.v(TAG, "next_max_id:" + next_max_id);
+			} else {
+				Toast.makeText(getApplicationContext(), "No more Data",
+						Toast.LENGTH_SHORT).show();
+			}
+
 		}
 
 		@Override
@@ -128,6 +153,38 @@ public class RepostActivity extends Activity implements OnClickListener {
 
 	};
 
+	private void sendData() {
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		StringBuilder content = new StringBuilder();
+		ArrayList<Tweet> list = mAdapter.getmTweets();
+		for (int i = 0; i < list.size(); i++) {
+			content.append(list.get(i).toString());
+		}
+		System.out.println(content.toString());
+		sendIntent.putExtra(Intent.EXTRA_TEXT, content.toString());
+		sendIntent.setType("text/plain");
+		// File f = writeFile(content.toString());
+		// System.out.println("File:" + f);
+		// sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+		// sendIntent.setType("application/octet-stream");
+		startActivity(sendIntent);
+	}
+	private File writeFile(String content) {
+		File f = new File(getApplicationContext().getFilesDir(), "test.csv");
+
+		try {
+			f.createNewFile();
+			// f = File.createTempFile("test.csv", null, getApplicationContext()
+			// .getCacheDir());
+			FileOutputStream fo = new FileOutputStream(f);
+			fo.write(content.getBytes());
+			fo.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
 	private class RepostAdapter extends BaseAdapter {
 		private ArrayList<Tweet> mTweets = new ArrayList<Tweet>(20);
 
@@ -137,26 +194,26 @@ public class RepostActivity extends Activity implements OnClickListener {
 
 		public void addAll(ArrayList<Tweet> tweets) {
 			if (tweets != null)
-				mTweets.addAll(tweets);
+				getmTweets().addAll(tweets);
 		}
 
 		@Override
 		public int getCount() {
-			if (mTweets == null)
+			if (getmTweets() == null)
 				return 0;
-			return mTweets.size();
+			return getmTweets().size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mTweets.get(position);
+			return getmTweets().get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
 			long id = 0;
 			try {
-				id = Long.parseLong(mTweets.get(position).getId());
+				id = Long.parseLong(getmTweets().get(position).getId());
 			} catch (Exception e) {
 				Log.v(TAG, "parse long exception");
 			}
@@ -174,7 +231,7 @@ public class RepostActivity extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			Tweet tweet = mTweets.get(position);
+			Tweet tweet = getmTweets().get(position);
 			holder.username.setText(tweet.getUser().getScreen_name());
 			holder.gender.setText(tweet.getUser().getGender());
 			holder.location.setText(tweet.getUser().getLocation());
@@ -183,6 +240,14 @@ public class RepostActivity extends Activity implements OnClickListener {
 			imageLoader.displayImage(tweet.getUser().getProfile_image_url(),
 					holder.avatar, options);
 			return convertView;
+		}
+
+		public ArrayList<Tweet> getmTweets() {
+			return mTweets;
+		}
+
+		public void setmTweets(ArrayList<Tweet> mTweets) {
+			this.mTweets = mTweets;
 		}
 	}
 	DisplayImageOptions options = new DisplayImageOptions.Builder()

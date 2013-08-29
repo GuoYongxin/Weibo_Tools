@@ -1,6 +1,7 @@
 package com.roger.weibotool.bean;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class Tweet implements Serializable {
 
@@ -57,7 +58,10 @@ public class Tweet implements Serializable {
 
 	@Override
 	public String toString() {
-		return user.toString() + "\t" + id + "\t" + text + "\t" + "\t";
+		// return String.format(Locale.ENGLISH, "%s %-30s \n",
+		// user.toString(), text);
+		return user.toString() + "," + text + "\n";
+		// return user.toString() + "\t" + id + "\t" + text + "\t" + "\n";
 	}
 
 	public String getCreated_at() {
