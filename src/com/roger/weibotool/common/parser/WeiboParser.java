@@ -113,19 +113,22 @@ public class WeiboParser
 
                 if (rootObj.has(field.getName()))
                 {
-                    Class<?> fieldClz = field.getClass();
+//                    Class<?> fieldClz = field.getClass();
                     Class<?> fieldType = field.getType();
+                    fieldType.isPrimitive();
+                    Log.v(TAG,fieldName+" is primitive="+fieldType.isPrimitive());
                     if (fieldType.isArray())
                     {
                         // is array
                         Class<?> compClazz = fieldType.getComponentType();
                         JSONArray jsonArray = rootObj.getJSONArray(fieldName);
                         int length = jsonArray.length();
+                        Log.v(TAG+"creating", compClazz.getSimpleName());
                         Object arrayFields = Array.newInstance(compClazz,
                                 length);
                         for (int i = 0; i < length; i++)
                         {
-                            if (compClazz.isPrimitive())
+                            if (AutoFillHelper.isPrimitiveType(fieldType))
                             {
                                 String jsString = jsonArray.getString(i);
                                 Object value = AutoFillHelper.getValue(
@@ -134,6 +137,7 @@ public class WeiboParser
                             }
                             else
                             {
+                            	Log.v(TAG+"creating", compClazz.getSimpleName());
                                 Object obj = compClazz.newInstance();
                                 JSONObject jsObj = jsonArray.getJSONObject(i);
                                 fillJSON(obj, jsObj);
@@ -141,14 +145,15 @@ public class WeiboParser
                             }
                         }
                     }
-                    else if (fieldType.isPrimitive())
+                    else if (AutoFillHelper.isPrimitiveType(fieldType))
                     {
                         // primitive type
                         fill(rootObj, field, fieldName, objectToFill);
                     }
                     else
                     {
-                        Object fieldObj = fieldClz.newInstance();
+                    	Log.v(TAG+"creating", fieldType.getSimpleName());
+                        Object fieldObj = fieldType.newInstance();
                         JSONObject jsObj = rootObj.getJSONObject(fieldName);
                         fillJSON(fieldObj, jsObj);
                         field.setAccessible(true);
@@ -209,7 +214,7 @@ public class WeiboParser
         field.setAccessible(true);
         try
         {
-            field.set(object, field);
+            field.set(object, value);
         }
         catch (IllegalArgumentException e)
         {
